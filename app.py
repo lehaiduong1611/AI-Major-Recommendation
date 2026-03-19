@@ -4,7 +4,7 @@ import numpy as np
 import joblib
 import os
 
-# --- 0. HÀM GIẢI THÍCH AI (Giữ nguyên logic cực xịn) ---
+# --- 1. HÀM GIẢI THÍCH AI (Logic hệ luật chuyên sâu) ---
 def generate_explanation(gpa_dict, holland_dict, major_name):
     holland_attributes = {
         'Holland_R': 'thích làm việc với công cụ, thiết bị, ưu tiên thực hành và vận động',
@@ -23,7 +23,7 @@ def generate_explanation(gpa_dict, holland_dict, major_name):
         'Anh': 'tư duy hội nhập và khả năng giao tiếp toàn cầu'
     }
 
-    # Xử lý Holland
+    # Phân tích Holland
     max_holland_score = max(holland_dict.values())
     top_hollands = [k for k, v in holland_dict.items() if v == max_holland_score]
     
@@ -37,7 +37,7 @@ def generate_explanation(gpa_dict, holland_dict, major_name):
         else:
             holland_cmt = f"Dữ liệu cho thấy chỉ số **{top_h_names}** của bạn rất nổi trội. Bạn có xu hướng {top_h_attrs}. Đặc điểm này đáp ứng xuất sắc các yêu cầu về tố chất nghề nghiệp của ngành **{major_name}**."
 
-    # Xử lý GPA
+    # Phân tích GPA
     max_gpa = max(gpa_dict.values())
     top_subjects = [k for k, v in gpa_dict.items() if v == max_gpa]
 
@@ -59,46 +59,46 @@ def generate_explanation(gpa_dict, holland_dict, major_name):
     explanation = f"**I. Cơ sở Tâm lý học:**\n{holland_cmt}\n\n**II. Cơ sở Học thuật:**\n{gpa_cmt}"
     return explanation
 
-# --- 1. CẤU HÌNH GIAO DIỆN & CSS CUSTOM TÍCH HỢP ẢNH NỀN ---
+# --- 2. CẤU HÌNH GIAO DIỆN & CSS TÍCH HỢP ẢNH NỀN ---
 st.set_page_config(page_title="AI Hướng Nghiệp - FPT University", layout="wide")
 
-custom_css = f"""
+custom_css = """
 <style>
     /* Nền tổng thể: Tối giản, sạch sẽ */
-    .stApp {{
+    .stApp {
         background-color: #fdfdfc;
         color: #2b2b2b;
-    }}
+    }
     
     /* Thiết kế Sidebar chuyên nghiệp, tông Navy đậm */
-    [data-testid="stSidebar"] {{
+    [data-testid="stSidebar"] {
         background-color: #1a2942;
         color: #f1f3f5;
-    }}
-    [data-testid="stSidebar"] * {{
+    }
+    [data-testid="stSidebar"] * {
         color: #f1f3f5;
-    }}
+    }
     
     /* Typography tiêu đề chính tông Navy đậm */
-    .main-title {{
+    .main-title {
         font-size: 38px;
         color: #1a2942;
         font-weight: 700;
         text-align: center;
         padding-bottom: 5px;
-    }}
+    }
     
-    .sub-title {{
+    .sub-title {
         text-align: center;
         color: #5f6368;
         font-size: 16px;
         margin-bottom: 40px;
-    }}
+    }
 
     /* Card hiển thị kết quả tích hợp ẢNH NỀN CỦA BẠN */
-    .result-card {{
+    .result-card {
         position: relative;
-        background-image: url("https://images.stockcake.com/public/0/7/f/07f6d562-953c-4933-a930-88f3e9c3219a_large/students-using-laptops-stockcake.jpg"); /* Dán link ảnh của bạn vào đây */
+        background-image: url("https://images.stockcake.com/public/0/7/f/07f6d562-953c-4933-a930-88f3e9c3219a_large/students-using-laptops-stockcake.jpg"); 
         background-size: cover;
         background-position: center;
         padding: 40px;
@@ -108,52 +108,52 @@ custom_css = f"""
         margin-bottom: 25px;
         border-bottom: 5px solid #d4af37; /* Điểm nhấn viền vàng Gold */
         box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }}
+    }
     
     /* Lớp phủ mờ (overlay) để chữ nổi bật hơn */
-    .result-card::after {{
+    .result-card::after {
         content: "";
         position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
         background-color: rgba(26, 41, 66, 0.75); /* Màu Navy đậm với độ mờ 75% */
         border-radius: 12px;
         z-index: 1;
-    }}
+    }
     
     /* Đưa chữ lên trên lớp phủ mờ */
-    .result-content {{
+    .result-content {
         position: relative;
         z-index: 2;
-    }}
+    }
 
-    .result-title {{
+    .result-title {
         font-size: 16px;
         text-transform: uppercase;
         letter-spacing: 1px;
         opacity: 0.9;
         margin-bottom: 10px;
         font-weight: 500;
-    }}
-    .result-major {{
+    }
+    .result-major {
         font-size: 36px;
         font-weight: 900;
         color: #FFD700; /* Màu vàng Gold rực rỡ */
         margin: 0;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
-    }}
+    }
 
     /* Bo góc và bóng đổ nhẹ cho các Container */
-    [data-testid="stVerticalBlock"] > div > div > div > [data-testid="stVerticalBlock"] > div {{
+    [data-testid="stVerticalBlock"] > div > div > div > [data-testid="stVerticalBlock"] > div {
         border-radius: 10px !important;
         background-color: #ffffff !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
         padding: 20px !important;
-    }}
+    }
 </style>
 """
 st.markdown(custom_css, unsafe_allow_html=True)
 
-# --- 2. TẢI "BỘ NÃO" AI VÀ DATABASE ---
+# --- 3. KHỞI TẠO DỮ LIỆU ---
 @st.cache_resource 
 def load_models():
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -177,7 +177,7 @@ except Exception as e:
     st.error(f"Sự cố hệ thống khi tải dữ liệu. Chi tiết mã lỗi: {e}")
     st.stop()
 
-# --- 3. SIDEBAR (THANH ĐIỀU HƯỚNG BÊN TRÁI) ---
+# --- 4. SIDEBAR (THÔNG TIN HỆ THỐNG) ---
 with st.sidebar:
     st.markdown("### TỔNG QUAN HỆ THỐNG")
     st.caption("FlowATS EdTech - Phiên bản phục vụ nghiên cứu")
@@ -188,9 +188,9 @@ with st.sidebar:
     st.markdown("---")
     st.write("Sản phẩm của nhóm sinh viên FPT University.")
 
-# --- 4. GIAO DIỆN CHÍNH (MAIN LAYOUT) ---
-st.markdown('<p class="main-title">🌐 Hệ Thống Tư Vấn Ngành Học & Trường Đại Học</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-title">Kết hợp dữ liệu Năng lực học thuật & Trắc nghiệm Tâm lý học Holland để tìm ra bệ phóng tương lai</p>', unsafe_allow_html=True)
+# --- 5. GIAO DIỆN CHÍNH (MAIN LAYOUT) ---
+st.markdown('<p class="main-title">Hệ Thống Phân Tích & Tư Vấn Ngành Học</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-title">Kết hợp dữ liệu Năng lực học thuật & Trắc nghiệm Tâm lý học Holland</p>', unsafe_allow_html=True)
 
 col_input, col_result = st.columns([1.2, 1], gap="large")
 
@@ -199,18 +199,21 @@ with col_input:
     with st.form("user_input_form"):
         with st.container(border=True):
             st.markdown("#### I. Năng lực học thuật (GPA Lớp 12)")
+            st.markdown("<br>", unsafe_allow_html=True)
+            
             c1, c2, c3 = st.columns(3)
             math = c1.number_input("Toán học", min_value=0.0, max_value=10.0, value=8.0, step=0.1)
             phy = c2.number_input("Vật Lý", min_value=0.0, max_value=10.0, value=8.0, step=0.1)
-            chem = c chem = c chem = c3.number_input("Hóa Học", min_value=0.0, max_value=10.0, value=7.5, step=0.1)
+            chem = c3.number_input("Hóa Học", min_value=0.0, max_value=10.0, value=7.5, step=0.1)
             
             c4, c5 = st.columns(2)
             lit = c4.number_input("Ngữ Văn", min_value=0.0, max_value=10.0, value=6.5, step=0.1)
             eng = c5.number_input("Tiếng Anh", min_value=0.0, max_value=10.0, value=7.0, step=0.1)
 
         with st.container(border=True):
-            st.markdown("#### II. Tính cách Holland (Mã 1-5)")
-            st.caption("Kéo thanh trượt từ 1 (Không giống tôi) đến 5 (Rất giống tôi)")
+            st.markdown("#### II. Chỉ số Tâm lý học Holland")
+            st.caption("Định mức: 1 (Hoàn toàn không phù hợp) đến 5 (Hoàn toàn phù hợp)")
+            st.markdown("<br>", unsafe_allow_html=True)
             
             h1, h2, h3 = st.columns(3)
             R = h1.slider("R - Kỹ thuật (Realistic)", 1, 5, 4)
@@ -223,12 +226,12 @@ with col_input:
             C = h6.slider("C - Tổ chức (Conventional)", 1, 5, 3)
 
         st.markdown("<br>", unsafe_allow_html=True)
-        submit_button = st.form_submit_button("PHÂN TÍCH HỒ SƠ & ĐƯA RA ĐỀ XUẤT", use_container_width=True)
+        submit_button = st.form_submit_button("TIẾN HÀNH PHÂN TÍCH DỮ LIỆU", use_container_width=True)
 
 # PHẦN KẾT QUẢ (CỘT PHẢI - TÍCH HỢP ẢNH NỀN)
 with col_result:
     if submit_button:
-        with st.spinner("Hệ thống đang xử lý hàng ngàn khả năng..."):
+        with st.spinner("Hệ thống đang xử lý thuật toán..."):
             # Chạy model
             user_input = np.array([[math, phy, chem, lit, eng, R, I, A, S, E, C]])
             user_scaled = scaler.transform(user_input)
@@ -264,7 +267,7 @@ with col_result:
             
             # Biểu đồ Top 3
             with st.container(border=True):
-                st.markdown("#### Tỷ trọng tương thích")
+                st.markdown("#### Tỷ trọng tương thích (Top 3)")
                 chart_data = pd.DataFrame({"Ngành học": top_3_majors, "Mức độ (%)": top_3_probs_scaled}).set_index("Ngành học")
                 st.bar_chart(chart_data)
 
@@ -284,7 +287,6 @@ if submit_button and df_uni is not None:
                 st.caption("Yêu cầu năng lực xuất sắc")
                 top_schools = df_filtered[df_filtered['Phan_Loai_Truong'] == 'Top']
                 for _, row in top_schools.iterrows():
-                    # Thẻ UI phẳng, viền xám tinh tế, viền trái đỏ đô
                     st.markdown(f"<div style='background-color: #fafafa; padding: 12px; margin-bottom: 8px; border-radius: 4px; border: 1px solid #eee; border-left: 4px solid #c92a2a;'><p style='margin: 0; font-weight: 600; color: #333;'>{row['Ten_Truong']}</p><p style='margin: 0; font-size: 13px; color: #666;'>Tổ hợp: {row['To_Hop_Mon']} | Điểm chuẩn: <strong>{row['Diem_Chuan']}</strong></p></div>", unsafe_allow_html=True)
         with c2:
             with st.container(border=True):
@@ -292,7 +294,6 @@ if submit_button and df_uni is not None:
                 st.caption("Yêu cầu năng lực khá - giỏi")
                 mid_schools = df_filtered[df_filtered['Phan_Loai_Truong'] == 'Mid']
                 for _, row in mid_schools.iterrows():
-                    # Thẻ UI phẳng, viền trái vàng mustard
                     st.markdown(f"<div style='background-color: #fafafa; padding: 12px; margin-bottom: 8px; border-radius: 4px; border: 1px solid #eee; border-left: 4px solid #f59f00;'><p style='margin: 0; font-weight: 600; color: #333;'>{row['Ten_Truong']}</p><p style='margin: 0; font-size: 13px; color: #666;'>Tổ hợp: {row['To_Hop_Mon']} | Điểm chuẩn: <strong>{row['Diem_Chuan']}</strong></p></div>", unsafe_allow_html=True)
         with c3:
             with st.container(border=True):
@@ -300,7 +301,6 @@ if submit_button and df_uni is not None:
                 st.caption("Tỷ lệ trúng tuyển mức độ cao")
                 safe_schools = df_filtered[df_filtered['Phan_Loai_Truong'] == 'Safe']
                 for _, row in safe_schools.iterrows():
-                    # Thẻ UI phẳng, viền trái xanh bích
                     st.markdown(f"<div style='background-color: #fafafa; padding: 12px; margin-bottom: 8px; border-radius: 4px; border: 1px solid #eee; border-left: 4px solid #2b8a3e;'><p style='margin: 0; font-weight: 600; color: #333;'>{row['Ten_Truong']}</p><p style='margin: 0; font-size: 13px; color: #666;'>Tổ hợp: {row['To_Hop_Mon']} | Điểm chuẩn: <strong>{row['Diem_Chuan']}</strong></p></div>", unsafe_allow_html=True)
     else:
-        st.warning(f"Hệ thống đang cập nhật dữ liệu điểm chuẩn cho ngành {predicted_major}.")
+        st.info(f"Hệ thống đang trong quá trình đồng bộ hóa phổ điểm cho chuyên ngành {predicted_major}.")
